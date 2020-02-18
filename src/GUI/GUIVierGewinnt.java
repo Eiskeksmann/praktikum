@@ -1,6 +1,8 @@
 package GUI;
 
 import netClient.Client;
+import netGame.VierGewinnt;
+import util.Location;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +13,7 @@ public class GUIVierGewinnt extends GUIPanel implements ActionListener {
 
     private GridBagLayout gbl;
     private GridBagConstraints gbc;
+    private VierGewinnt gameinfo;
 
     private Client client;
     private JButton[][] grid;
@@ -29,14 +32,16 @@ public class GUIVierGewinnt extends GUIPanel implements ActionListener {
         addComponents();
     }
 
+    public void setGameInfo(VierGewinnt gameinfo){ this.gameinfo = gameinfo;}
     public void setClient(Client client){ this.client = client; }
     @Override
 
     protected void initComponents() {
 
-        for(int x = 0; x < grid_x; x++){
+        this.setBackground(COL_DARKGREY);
+        for(int y = 0; y < grid_y; y++){
 
-            for(int y = 0; y < grid_y; y++){
+            for(int x = 0; x < grid_x; x++){
 
                 JButton filler = new JButton();
                 setDefaultButtonStyle(filler);
@@ -57,9 +62,9 @@ public class GUIVierGewinnt extends GUIPanel implements ActionListener {
         gbc.ipadx = 30;
         gbc.insets = new Insets(2,2,2,2);
 
-        for(int x = 0; x < grid_x; x++){
+        for(int y = 0; y < grid_y; y++){
 
-            for(int y = 0; y < grid_y; y++){
+            for(int x = 0; x < grid_x; x++){
 
                 gbc.gridx = x;
                 gbc.gridy = y;
@@ -68,13 +73,13 @@ public class GUIVierGewinnt extends GUIPanel implements ActionListener {
         }
     }
 
-    public void setTurn(int x, int y, String playerid){
+    public void setTurn(int x, int y, int set){
 
-        if(playerid.equals("ID_SP1")){
+        if(set == 1){
 
             grid[x][y].setBackground(COL_DARKORANGE);
 
-        } else if (playerid.equals("ID_SP2")){
+        } else if (set == 2 || set == 3){
 
             grid[x][y].setBackground(COL_VIOLET);
         }
@@ -89,7 +94,17 @@ public class GUIVierGewinnt extends GUIPanel implements ActionListener {
 
                 if(e.getSource() == grid[x][y]){
 
-                    //TODO X - Y übergeben
+                    if(gameinfo.getHost()){
+
+                        gameinfo.getSp1().insertTurnCoordinate(new Location(x, y));
+                        gameinfo.spielZug(gameinfo.getSp1());
+
+                    } else if (!gameinfo.getHost()){
+
+                        gameinfo.getSp2().insertTurnCoordinate(new Location(x, y));
+                        gameinfo.spielZug(gameinfo.getSp2());
+
+                    }
                 }
             }
         }

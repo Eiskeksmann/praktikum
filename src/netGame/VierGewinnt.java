@@ -11,6 +11,7 @@ public class VierGewinnt extends Spiel{
 
     private VierGewinntMap map_;
     private Client client;
+    private boolean host;
     private GUIFrame frame;
     private GUIVierGewinnt gui;
 
@@ -21,11 +22,15 @@ public class VierGewinnt extends Spiel{
         sp1_.setId_("ID_SP1");
         sp2_ = new Spieler(_sp2_name, false);
         sp2_.setId_("ID_SP2");
-        map_ = new VierGewinntMap(x, y);
-        map_.initMap();
         frame = new GUIFrame("VIERGEWINNT", new Dimension(x * 30, y * 30));
         gui = (GUIVierGewinnt) frame.getContent();
         gui.setClient(client);
+        gui.setGameInfo(this);
+        map_ = new VierGewinntMap(x, y, gui);
+        map_.initMap();
+        if(client.getId().equals(_sp1_name)) {
+            host = true;
+        } else host = false;
     }
     public VierGewinnt(String _sp1_name, int x, int y){
 
@@ -33,12 +38,16 @@ public class VierGewinnt extends Spiel{
         sp1_.setId_("ID_SP1");
         sp2_ = new Spieler("bot", true);
         sp2_.setId_("ID_BOT");
-        map_ = new VierGewinntMap(x, y);
-        map_.initMap();
         frame = new GUIFrame("VIERGEWINNT", new Dimension(x * 30, y * 30));
         gui = (GUIVierGewinnt) frame.getContent();
         gui.setClient(client);
+        map_ = new VierGewinntMap(x, y, gui);
+        map_.initMap();
+        host = true;
     }
+    public boolean getHost(){ return host; }
+    public Spieler getSp1(){ return sp1_; }
+    public Spieler getSp2(){ return sp2_; }
 
     public void spielZug(Spieler _sp){
 

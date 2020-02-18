@@ -13,7 +13,7 @@ public class VierGewinntMap extends Spielfeld {
     private int winning_col_;
 
     //Constructor
-    public VierGewinntMap(int _x, int _y){
+    public VierGewinntMap(int _x, int _y, GUIVierGewinnt gui){
 
         this.x_ = _x;
         this.y_ = _y;
@@ -21,6 +21,7 @@ public class VierGewinntMap extends Spielfeld {
         this.grid_ = new int[_x][_y];
         this.turn_mem = new ArrayList<>();
         this.winning_col_ = 0;
+        this.gui = gui;
     }
 
     //Getter - Setter
@@ -92,7 +93,8 @@ public class VierGewinntMap extends Spielfeld {
                 grid_[i][_column-1] = set;
                 _sp.setLast_x_(i);
                 _sp.setLast_y_(_column-1);
-                addTurn(_sp, i, _column-1);
+                //addTurn(_sp, i, _column-1);
+                gui.setTurn(i, _column-1, set);
                 if(winProof(set, i, _column-1)){
                     System.out.println("DER GEWINNER IST: " + _sp.getName_());
                     return;
