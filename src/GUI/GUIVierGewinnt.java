@@ -27,6 +27,8 @@ public class GUIVierGewinnt extends GUIPanel implements ActionListener {
         gbc = new GridBagConstraints();
         grid_x = width / 30;
         grid_y = width / 30;
+        System.out.println(grid_x + "\n");
+        System.out.println(grid_y + "\n");
         grid = new JButton[grid_x][grid_y];
         initComponents();
         addComponents();
@@ -96,13 +98,15 @@ public class GUIVierGewinnt extends GUIPanel implements ActionListener {
 
                     if(gameinfo.getHost()){
 
-                        gameinfo.getSp1().insertTurnCoordinate(new Location(x, y));
-                        gameinfo.spielZug(gameinfo.getSp1());
+                        //gameinfo.getSp1().insertTurnCoordinate(new Location(x, y));
+                        //gameinfo.spielZug(gameinfo.getSp1());
+                        System.out.println("Spieler 1 x: [" + x +  "] " + "y [ " + y + "]");
 
                     } else if (!gameinfo.getHost()){
 
-                        gameinfo.getSp2().insertTurnCoordinate(new Location(x, y));
-                        gameinfo.spielZug(gameinfo.getSp2());
+                        //gameinfo.getSp2().insertTurnCoordinate(new Location(x, y));
+                        //gameinfo.spielZug(gameinfo.getSp2());
+                        System.out.println("Spieler 2 x: [" + x +  "] " + "y [ " + y + "]");
 
                     }
                 }

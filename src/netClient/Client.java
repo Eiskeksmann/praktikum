@@ -70,7 +70,6 @@ public class Client{
         switch (cmd.get(0)){
 
             case("SERVER"):
-
                 break;
             case("LOGIN"):
                 id = cmd.get(1);
