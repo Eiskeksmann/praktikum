@@ -99,20 +99,22 @@ public class Client{
                 break;
             case("ACCEPT"):
                 gui.getGamesettings().getAccepted();
+                gui.setStatus(cmd.get(1));
                 break;
             case("DENY"):
                 gui.getGamesettings().getDenied();
+                gui.setStatus(cmd.get(1));
                 break;
             case("VIERGEWINNT"):
                 v = new VierGewinnt(id, cmd.get(1), Integer.parseInt(cmd.get(2)),
                         Integer.parseInt(cmd.get(3)), this);
-
                 break;
             case("FUTTERN"):
                 break;
             case("CONNECT"):
                 if(cmd.get(1).equals("Viergewinnt")){
 
+                    System.out.println("I connected ...");
                     v = new VierGewinnt(cmd.get(2), id,  Integer.parseInt(cmd.get(3)),
                             Integer.parseInt(cmd.get(4)), this);
 

@@ -165,6 +165,7 @@ public class GUIGameSettings extends GUIPanel implements ActionListener {
                         size_x + "|" + size_y + "|" + "BOT", "|");
             }
             client.tryCustomCommand(gamestart);
+            client.getGUI().closeGameSettings();
         }
         catch (IOException e){
 

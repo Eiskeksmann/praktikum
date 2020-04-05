@@ -121,6 +121,7 @@ public class GUIClientPanel extends GUIPanel implements MouseListener, KeyListen
         miniconfirmation = (GUIMiniConfirmation) miniconfirmationframe.getContent();
         miniconfirmation.setTarget(versus);
         miniconfirmation.setMsg("Want to play " + gametype + " against : " + versus);
+        miniconfirmation.setGameMode(gametype);
         miniconfirmation.setClient(client);
     }
     public void setUpGameSettingsFrame(String versus){
@@ -129,19 +130,6 @@ public class GUIClientPanel extends GUIPanel implements MouseListener, KeyListen
         gamesettings = (GUIGameSettings) gameselectionframe.getContent();
         gamesettings.setClient(client);
         gamesettings.setTarget(versus);
-    }
-
-    public void hostSelectedGame(int size_x, int size_y, String gametype, String versus){
-
-        gameframe = new GUIFrame(gametype, new Dimension(size_x, size_y));
-        //TODO CAST V or F
-
-    }
-    public void connectSelectedGame(int size_x, int size_y, String gametype, String versus){
-
-        gameframe = new GUIFrame(gametype, new Dimension(size_x, size_y));
-        //TODO CAST V or F
-
     }
 
     @Override
@@ -219,11 +207,11 @@ public class GUIClientPanel extends GUIPanel implements MouseListener, KeyListen
 
     }
 
-    public void miniSaysYes(String target){
+    public void miniSaysYes(String target, String gametype){
 
         try{
 
-            client.tryCustomCommand(new Command("ACCEPT|" + target, "|"));
+            client.tryCustomCommand(new Command("ACCEPT|" + target + "|" + gametype, "|"));
             setStatus("ACCEPTED");
             closeMiniConfirmation();
         }

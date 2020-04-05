@@ -15,17 +15,19 @@ public class GUIMiniConfirmation extends GUIPanel implements ActionListener {
     private Label lbl_msg;
 
     private Client client;
-    private String target;
+    private String target, gamemode;
 
     public GUIMiniConfirmation(int width, int height) {
         super(width, height);
         gbl = new GridBagLayout();
         gbc = new GridBagConstraints();
         target = "";
+        gamemode = "";
         initComponents();
         addComponents();
     }
 
+    public void setGameMode(String gamemode) {this.gamemode = gamemode; }
     public void setTarget(String target){ this.target = target; }
     public void setClient(Client client){ this.client = client; }
     public void setMsg(String msg){
@@ -80,7 +82,7 @@ public class GUIMiniConfirmation extends GUIPanel implements ActionListener {
 
         if(e.getSource() == jbt_yes){
 
-            client.getGUI().miniSaysYes(target);
+            client.getGUI().miniSaysYes(target, gamemode);
 
         } else if (e.getSource() == jbt_no){
 

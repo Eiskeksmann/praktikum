@@ -15,6 +15,9 @@ public class VierGewinnt extends Spiel{
     private GUIFrame frame;
     private GUIVierGewinnt gui;
 
+    private int gui_sizex;
+    private int gui_sizey;
+
     public VierGewinnt(String _sp1_name, String _sp2_name, int x, int y, Client client){
 
         this.client = client;
@@ -22,10 +25,15 @@ public class VierGewinnt extends Spiel{
         sp1_.setId_("ID_SP1");
         sp2_ = new Spieler(_sp2_name, false);
         sp2_.setId_("ID_SP2");
-        frame = new GUIFrame("VIERGEWINNT", new Dimension(x * 30, y * 30));
+        gui_sizex = x * 40;
+        gui_sizey = y * 40;
+        frame = new GUIFrame("VIERGEWINNT", new Dimension(gui_sizex, gui_sizey));
         gui = (GUIVierGewinnt) frame.getContent();
         gui.setClient(client);
         gui.setGameInfo(this);
+        gui.setGrid_x(x);
+        gui.setGrid_y(y);
+        gui.init();
         map_ = new VierGewinntMap(x, y, gui);
         map_.initMap();
         if(client.getId().equals(_sp1_name)) {
@@ -38,7 +46,7 @@ public class VierGewinnt extends Spiel{
         sp1_.setId_("ID_SP1");
         sp2_ = new Spieler("bot", true);
         sp2_.setId_("ID_BOT");
-        frame = new GUIFrame("VIERGEWINNT", new Dimension(x * 30, y * 30));
+        frame = new GUIFrame("VIERGEWINNT", new Dimension(x * 60, y * 60));
         gui = (GUIVierGewinnt) frame.getContent();
         gui.setClient(client);
         map_ = new VierGewinntMap(x, y, gui);

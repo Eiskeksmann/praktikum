@@ -3,6 +3,7 @@ package netServer;
 import GUI.GUIFrame;
 import GUI.GUIPanel;
 import GUI.GUIServerPanel;
+import util.GameInfo;
 import util.Login;
 
 import java.awt.*;
@@ -19,6 +20,7 @@ public class Server {
     private GUIFrame frame;
     private GUIServerPanel gui;
     private Vector<ClientHandlerThread> active;
+    private Vector<GameInfo> games;
     private int count;
     private ArrayList<Login> ll;
     private ServerSocket ss;
@@ -30,12 +32,13 @@ public class Server {
     public Server(int port) throws IOException {
 
         active = new Vector<>();
+        games = new Vector<>();
         ll = new ArrayList();
         ll.add(new Login("admin","admin"));
         ll.add(new Login("test","test"));
         ss = new ServerSocket(port);
         isRunning = true;
-        frame = new GUIFrame("SERVER",new Dimension(400, 300));
+        frame = new GUIFrame("SERVER",new Dimension(600, 300));
         gui = (GUIServerPanel) frame.getContent();
         fetchRoutine();
     }
@@ -45,6 +48,7 @@ public class Server {
     }
     public GUIPanel getGUI() { return gui; }
     public Vector<ClientHandlerThread> getActive(){ return active; }
+    public Vector<GameInfo> getGames(){ return games; }
     public ArrayList<Login> getLoginList(){ return ll; }
 
     private void fetchRoutine() throws IOException {

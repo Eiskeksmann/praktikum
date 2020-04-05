@@ -17,7 +17,7 @@ public class GUIMiniSelection extends GUIPanel implements MouseListener {
 
     private String target;
     private JPanel jpan;
-    private Label lbl_1, lbl_2, lbl_3;
+    private Label lbl_1, lbl_2, lbl_3, lbl_4;
 
     public GUIMiniSelection(int width, int height) {
         super(width, height);
@@ -43,25 +43,27 @@ public class GUIMiniSelection extends GUIPanel implements MouseListener {
         lbl_1.addMouseListener(this);
 
         lbl_2 = new Label("... send Message");
-        setDefaultLabelStyle(lbl_1);
         lbl_2.setForeground(COL_LIGHTGRAY);
         lbl_2.addMouseListener(this);
 
         lbl_3 = new Label("... send Game Request");
-        setDefaultLabelStyle(lbl_1);
         lbl_3.setForeground(COL_LIGHTGRAY);
         lbl_3.addMouseListener(this);
+
+        lbl_4 = new Label("... send BroadcastMessage");
+        lbl_4.setForeground(COL_LIGHTGRAY);
+        lbl_4.addMouseListener(this);
     }
 
     @Override
     protected void addComponents() {
 
         jpan.setLayout(gbl);
-        gbc.insets = new Insets(2,2,2,2);
+        gbc.insets = new Insets(2, 2, 2, 2);
         gbc.anchor = GridBagConstraints.PAGE_END;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
-        gbc.weighty = 0.25;
+        gbc.weighty = 0.2;
         gbc.gridx = 0;
         gbc.gridy = 0;
         jpan.add(lbl_1, gbc);
@@ -71,10 +73,13 @@ public class GUIMiniSelection extends GUIPanel implements MouseListener {
         gbc.gridy = 1;
         jpan.add(lbl_2, gbc);
 
-        gbc.anchor = GridBagConstraints.PAGE_START;
         gbc.gridx = 0;
         gbc.gridy = 2;
         jpan.add(lbl_3, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        jpan.add(lbl_4, gbc);
 
         resetGridBagConstraints(gbc);
 
@@ -90,16 +95,47 @@ public class GUIMiniSelection extends GUIPanel implements MouseListener {
             if (e.getSource() == lbl_2) {
 
                 //TODO --> initiate Message towards "target"
-                client.tryCustomCommand(new Command("PREPMSG|" + target, "|"));
-                client.getGUI().closeMiniFrame();
+                if(client.getId().equals(target)){
+
+                    client.getGUI().setStatus("Thats you ... xD");
+                    client.getGUI().closeMiniFrame();
+
+                }
+                else {
+
+                    client.tryCustomCommand(new Command("PREPMSG|" + target, "|"));
+                    client.getGUI().closeMiniFrame();
+                }
 
 
             } else if (e.getSource() == lbl_3) {
 
                 //TODO --> initiate Game Request towards "target"
-                client.tryCustomCommand(new Command("PREPGAME|" + target, "|"));
-                client.getGUI().closeMiniFrame();
+                if(client.getId().equals(target)){
 
+                    client.getGUI().setStatus("Thats you ... xD");
+                    client.getGUI().closeMiniFrame();
+                }
+                else {
+
+                    client.tryCustomCommand(new Command("PREPGAME|" + target, "|"));
+                    client.getGUI().closeMiniFrame();
+                }
+            }
+            else if (e.getSource() == lbl_4){
+
+                //TODO --> initiate Message towards "target"
+                if(client.getId().equals(target)){
+
+                    client.getGUI().setStatus("Thats you ... xD");
+                    client.getGUI().closeMiniFrame();
+
+                }
+                else {
+
+                    client.tryCustomCommand(new Command("PREPMSG|" + "ALL", "|"));
+                    client.getGUI().closeMiniFrame();
+                }
             }
         }
         catch (IOException ex){
@@ -123,13 +159,14 @@ public class GUIMiniSelection extends GUIPanel implements MouseListener {
 
         if(e.getSource() == lbl_2){
 
-            //TODO --> initiate Message towards "target"
             lbl_2.setBackground(COL_DARKORANGE);
         }
         else if (e.getSource() == lbl_3){
 
-            //TODO --> initiate Game Request towards "target"
             lbl_3.setBackground(COL_DARKORANGE);
+        } else if (e.getSource() == lbl_4){
+
+            lbl_4.setBackground(COL_DARKORANGE);
         }
     }
 
@@ -138,13 +175,16 @@ public class GUIMiniSelection extends GUIPanel implements MouseListener {
 
         if(e.getSource() == lbl_2){
 
-            //TODO --> initiate Message towards "target"
-            lbl_2.setBackground(COL_DARKERGREY);
+            lbl_2.setBackground(COL_DARKGREY);
         }
         else if (e.getSource() == lbl_3){
 
-            //TODO --> initiate Game Request towards "target"
-            lbl_3.setBackground(COL_DARKERGREY);
+            lbl_3.setBackground(COL_DARKGREY);
         }
+        else if (e.getSource() == lbl_4){
+
+            lbl_4.setBackground(COL_DARKGREY);
+        }
+
     }
 }

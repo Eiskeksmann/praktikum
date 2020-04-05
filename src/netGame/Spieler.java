@@ -62,7 +62,9 @@ public class Spieler{
     }
     public void insertTurnCoordinate(Location loc){
 
-        this.loc = loc;
+        if(turn_) {
+            this.loc = loc;
+        } else return;
     }
     public Location getTurnCoordinate(){
         return loc;

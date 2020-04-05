@@ -2,7 +2,9 @@ package netServer;
 
 import GUI.GUIFrame;
 import GUI.GUIServerPanel;
+import netClient.Client;
 import util.Command;
+import util.GameInfo;
 import util.Login;
 
 import java.io.DataInputStream;
@@ -96,6 +98,7 @@ public class ClientHandlerThread implements Runnable{
 
                         if (cht.id.equals(id)) {
                             dos.writeUTF("ADDCLIENT|" + cht.id);
+                            gui.addClient(id);
                         } else if (!cht.id.equals(id)) {
                             cht.dos.writeUTF("ADDCLIENT|" + id);
                             dos.writeUTF("ADDCLIENT|" + cht.id);
@@ -115,10 +118,11 @@ public class ClientHandlerThread implements Runnable{
 
                         case ("PREPMSG"):
                             //cmd.get(1) --> target
-                            dos.writeUTF("PREPMSG|" + cmd.get(1));
-                            for(ClientHandlerThread cht : server.getActive()){
 
-                                if(cht.id.equals(cmd.get(1))){
+                            dos.writeUTF("PREPMSG|" + cmd.get(1));
+                            for (ClientHandlerThread cht : server.getActive()) {
+
+                                if (cht.id.equals(cmd.get(1))) {
                                     cht.dos.writeUTF("MSGINFO|" + id);
                                 }
                             }
@@ -126,28 +130,39 @@ public class ClientHandlerThread implements Runnable{
                         case ("PREPGAME"):
                             dos.writeUTF("PREPGAME|" + cmd.get(1));
                             break;
-                        case("SENDREQUEST"):
-                            for(ClientHandlerThread cht : server.getActive()){
+                        case ("SENDREQUEST"):
+                            for (ClientHandlerThread cht : server.getActive()) {
 
-                                if(cht.id.equals(cmd.get(1)))
+                                if (cht.id.equals(cmd.get(1)))
                                     cht.dos.writeUTF("GAMEREQUEST|" + id + "|" + cmd.get(2));
                             }
                             break;
-                        case("ACCEPT"):
-                            for(ClientHandlerThread cht : server.getActive()){
+                        case ("ACCEPT"):
+                            for (ClientHandlerThread cht : server.getActive()) {
 
-                                if(cht.id.equals(cmd.get(1)))
-                                    cht.dos.writeUTF("ACCEPT|" + "1");
+                                if (cht.id.equals(cmd.get(1))) {
+
+                                    for (GameInfo gi : server.getGames()) {
+                                        if (gi.compareInfo(cht.id + "-" + id)) {
+
+                                            cht.dos.writeUTF("DENY|" + id + "you are already playing");
+                                        }
+                                    }
+
+                                    cht.dos.writeUTF("ACCEPT|" + id + " has accepted");
+                                    GameInfo gameinfo = new GameInfo(cht.id, id, cmd.get(2));
+                                    server.getGames().add(gameinfo);
+                                    gui.addGame(gameinfo.getInfo());
+                                    break;
+                                }
                             }
                             break;
                         case("DENY"):
                             for(ClientHandlerThread cht : server.getActive()){
 
                                 if(cht.id.equals(cmd.get(1)))
-                                    cht.dos.writeUTF("DENY|" + "2");
+                                    cht.dos.writeUTF("DENY|" + id + " has denied");
                             }
-                            break;
-                        case("CONNECT"):
                             break;
                         case("HOST"):
                             //1 --> gametype
@@ -157,15 +172,18 @@ public class ClientHandlerThread implements Runnable{
                             if(cmd.get(1).equals("Viergewinnt")){
 
                                 dos.writeUTF("VIERGEWINNT|" + cmd.get(4) + "|" + cmd.get(2) + "|" + cmd.get(3));
+
                             } else if (cmd.get(1).equals("Futtern")){
 
                                 dos.writeUTF("FUTTERN|" + cmd.get(4) + "|" + cmd.get(2) + "|" + cmd.get(3));
                             }
                             for(ClientHandlerThread cht : server.getActive()){
 
-                                if(cht.id.equals(cmd.get(1)))
+                                if(cht.id.equals(cmd.get(4)))
                                     cht.dos.writeUTF("CONNECT|" + cmd.get(1) + "|" + id + "|"
                                             + cmd.get(2) + "|" + cmd.get(3));
+                                System.out.println("CONNECT|" + cmd.get(1) + "|" + id + "|"
+                                        + cmd.get(2) + "|" + cmd.get(3));
                             }
 
 
@@ -173,7 +191,7 @@ public class ClientHandlerThread implements Runnable{
                         case("MSG"):
                             for(ClientHandlerThread cht : server.getActive()){
 
-                                if(cht.id.equals(cmd.get(1))){
+                                if(cht.id.equals(cmd.get(1)) || cmd.get(1).equals("ALL")){
                                     cht.dos.writeUTF("DISPLAYMSG|" + id + "|" + cmd.get(2));
                                     dos.writeUTF("DISPLAYMSG|" + cmd.get(1) + "|" + cmd.get(2));
                                 }

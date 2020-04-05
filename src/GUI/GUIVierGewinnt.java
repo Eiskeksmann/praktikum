@@ -2,7 +2,6 @@ package GUI;
 
 import netClient.Client;
 import netGame.VierGewinnt;
-import util.Location;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,43 +21,51 @@ public class GUIVierGewinnt extends GUIPanel implements ActionListener {
     private int grid_y;
 
     public GUIVierGewinnt(int width, int height) {
+
         super(width, height);
+        addBorderPanels(this);
         gbl = new GridBagLayout();
         gbc = new GridBagConstraints();
-        grid_x = width / 30;
-        grid_y = width / 30;
-        System.out.println(grid_x + "\n");
-        System.out.println(grid_y + "\n");
-        grid = new JButton[grid_x][grid_y];
+    }
+
+    public void setGrid_x(int grid_x){ this.grid_x = grid_x; }
+    public void setGrid_y(int grid_y){ this.grid_y = grid_y; }
+    public void init(){
+
         initComponents();
         addComponents();
     }
-
     public void setGameInfo(VierGewinnt gameinfo){ this.gameinfo = gameinfo;}
     public void setClient(Client client){ this.client = client; }
     @Override
 
     protected void initComponents() {
 
-        this.setBackground(COL_DARKGREY);
+        grid = new JButton[grid_x][grid_y];
         for(int y = 0; y < grid_y; y++){
 
             for(int x = 0; x < grid_x; x++){
 
                 JButton filler = new JButton();
                 setDefaultButtonStyle(filler);
+                filler.setMinimumSize(new Dimension(10,10));
+                filler.setMaximumSize(new Dimension(10,10));
                 filler.addActionListener(this);
                 grid[x][y] = filler;
             }
         }
-        this.setLayout(gbl);
     }
 
     @Override
     protected void addComponents() {
 
-        gbc.weightx = this.getWidth() / grid_x;
-        gbc.weighty = this.getWidth() / grid_y;
+        super.getCenter().setLayout(gbl);
+        gbc.weightx = (1.0 / grid_x);
+        gbc.weighty = (1.0 / grid_y);
+        //System.out.println("GridWidths :" + grid_x);
+        //System.out.println("GridHeights :" + grid_y);
+        //System.out.println("GridWidth :" + gbc.weightx);
+        //System.out.println("GridHeight :" + gbc.weighty);
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.ipady = 30;
         gbc.ipadx = 30;
@@ -70,9 +77,12 @@ public class GUIVierGewinnt extends GUIPanel implements ActionListener {
 
                 gbc.gridx = x;
                 gbc.gridy = y;
-                this.add(grid[x][y], gbc);
+                super.getCenter().add(grid[x][y], gbc);
             }
         }
+        System.out.println("Button Size x: " + grid[0][0].getSize().width);
+        System.out.println("Button Size y: " + grid[0][0].getSize().height);
+        resetGridBagConstraints(gbc);
     }
 
     public void setTurn(int x, int y, int set){
@@ -101,13 +111,16 @@ public class GUIVierGewinnt extends GUIPanel implements ActionListener {
                         //gameinfo.getSp1().insertTurnCoordinate(new Location(x, y));
                         //gameinfo.spielZug(gameinfo.getSp1());
                         System.out.println("Spieler 1 x: [" + x +  "] " + "y [ " + y + "]");
+                        System.out.println("Button Size x: " + grid[x][y].getSize().width);
+                        System.out.println("Button Size y: " + grid[x][y].getSize().height);
 
                     } else if (!gameinfo.getHost()){
 
                         //gameinfo.getSp2().insertTurnCoordinate(new Location(x, y));
                         //gameinfo.spielZug(gameinfo.getSp2());
                         System.out.println("Spieler 2 x: [" + x +  "] " + "y [ " + y + "]");
-
+                        System.out.println("Button Size x: " + grid[x][y].getSize().width);
+                        System.out.println("Button Size y: " + grid[x][y].getSize().height);
                     }
                 }
             }

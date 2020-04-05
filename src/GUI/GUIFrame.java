@@ -24,7 +24,7 @@ public class GUIFrame extends JFrame {
                 this.setContentPane(content = new GUIClientPanel(d.width, d.height));
                 break;
             case("VIERGEWINNT"):
-                this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 this.setContentPane(content = new GUIVierGewinnt(d.width, d.height));
                 break;
             case("FUTTERN"):
@@ -32,19 +32,22 @@ public class GUIFrame extends JFrame {
                 this.setContentPane(content = new GUIFuttern(d.width, d.height));
                 break;
             case("SETTINGS"):
-                this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 this.setContentPane(content = new GUIGameSettings(d.width, d.height));
                 break;
             case("MINICONFIRM"):
-                this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 this.setContentPane(content = new GUIMiniConfirmation(d.width, d.height));
                 break;
+
             default:
                 this.setContentPane(content = new GUIMiniSelection(d.width, d.height));
                 break;
         }
+
         this.pack();
         this.setLocationRelativeTo(null);
+        //this.setResizable(false);
         this.setVisible(true);
     }
 
