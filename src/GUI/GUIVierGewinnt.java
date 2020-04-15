@@ -2,6 +2,7 @@ package GUI;
 
 import netClient.Client;
 import netGame.VierGewinnt;
+import util.Location;
 
 import javax.swing.*;
 import java.awt.*;
@@ -108,7 +109,7 @@ public class GUIVierGewinnt extends GUIPanel implements ActionListener {
 
                     if(gameinfo.getHost()){
 
-                        //gameinfo.getSp1().insertTurnCoordinate(new Location(x, y));
+                        gameinfo.getSp1().insertTurnCoordinate(new Location(x, y));
                         //gameinfo.spielZug(gameinfo.getSp1());
                         System.out.println("Spieler 1 x: [" + x +  "] " + "y [ " + y + "]");
                         System.out.println("Button Size x: " + grid[x][y].getSize().width);
@@ -116,7 +117,7 @@ public class GUIVierGewinnt extends GUIPanel implements ActionListener {
 
                     } else if (!gameinfo.getHost()){
 
-                        //gameinfo.getSp2().insertTurnCoordinate(new Location(x, y));
+                        gameinfo.getSp2().insertTurnCoordinate(new Location(x, y));
                         //gameinfo.spielZug(gameinfo.getSp2());
                         System.out.println("Spieler 2 x: [" + x +  "] " + "y [ " + y + "]");
                         System.out.println("Button Size x: " + grid[x][y].getSize().width);

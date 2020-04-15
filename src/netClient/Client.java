@@ -32,6 +32,9 @@ public class Client{
     private VierGewinnt v;
     private Futtern f;
 
+    private boolean inGame;
+    private boolean turn;
+
     public Client(int port) throws IOException {
 
             this.ip = InetAddress.getByName("localhost");
@@ -46,6 +49,9 @@ public class Client{
             this.log_frame = new GUIFrame("LOGIN", new Dimension( 250, 120));
             log_gui = (GUILoginPanel) log_frame.getContent();
             log_gui.setClient(this);
+            
+            this.inGame = false;
+            this.turn = false;
     }
 
     public GUIClientPanel getGUI(){ return gui; }

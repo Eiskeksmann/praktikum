@@ -40,7 +40,7 @@ public class VierGewinnt extends Spiel{
             host = true;
         } else host = false;
     }
-    public VierGewinnt(String _sp1_name, int x, int y){
+    public VierGewinnt(String _sp1_name, int x, int y, Client client){
 
         sp1_ = new Spieler(_sp1_name, false);
         sp1_.setId_("ID_SP1");
