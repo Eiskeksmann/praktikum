@@ -11,7 +11,7 @@ public class VierGewinnt extends Spiel{
 
     private VierGewinntMap map_;
     private Client client;
-    private boolean host;
+    private String id;
     private GUIFrame frame;
     private GUIVierGewinnt gui;
 
@@ -30,15 +30,15 @@ public class VierGewinnt extends Spiel{
         frame = new GUIFrame("VIERGEWINNT", new Dimension(gui_sizex, gui_sizey));
         gui = (GUIVierGewinnt) frame.getContent();
         gui.setClient(client);
-        gui.setGameInfo(this);
+        gui.setGameState(this);
         gui.setGrid_x(x);
         gui.setGrid_y(y);
         gui.init();
         map_ = new VierGewinntMap(x, y, gui);
         map_.initMap();
         if(client.getId().equals(_sp1_name)) {
-            host = true;
-        } else host = false;
+            id = "HOST";
+        } else id = "JOIN";
     }
     public VierGewinnt(String _sp1_name, int x, int y, Client client){
 
@@ -51,12 +51,49 @@ public class VierGewinnt extends Spiel{
         gui.setClient(client);
         map_ = new VierGewinntMap(x, y, gui);
         map_.initMap();
-        host = true;
+        id = "HOST";
     }
-    public boolean getHost(){ return host; }
+    public VierGewinnt(String sp1, String sp2, int x, int y){
+
+        sp1_ = new Spieler(sp1, false);
+        sp1_.setId_("ID_SP1");
+        sp2_ = new Spieler(sp2, false);
+        sp2_.setId_("ID_SP2");
+        map_ = new VierGewinntMap(x, y);
+        map_.initMap();
+        id = "SERVER";
+    }
+    public String getHost(){ return id; }
     public Spieler getSp1(){ return sp1_; }
     public Spieler getSp2(){ return sp2_; }
 
+    public boolean checkValidTurn(String sp, int x){
+
+        if(sp.equals("HOST")) {
+            if (map_.pretendSetGrid(sp1_, x)) return true;
+        } else if (sp.equals("JOIN")){
+            if(map_.pretendSetGrid(sp2_, x)) return true;
+        }
+        return false;
+    }
+    public int getValidY(String sp, int x){
+
+        if(sp.equals("HOST")) {
+            return map_.setServerGrid(sp1_, x);
+        } else if (sp.equals("JOIN")){
+            return map_.setServerGrid(sp2_, x);
+        }
+        return -1;
+    }
+    public boolean winProof(int sp, int x, int y){
+        return map_.winProof(sp, x, y);
+    }
+    public void addClientVisual(int x, int y, String sep){
+
+        if(sep.equals("ME")) gui.setTurn(x, y,1);
+        else if (sep.equals("HIM")) gui.setTurn(x, y, 2);
+
+    }
     public void spielZug(Spieler _sp){
 
         if(!_sp.getKi_()) {
@@ -137,6 +174,9 @@ public class VierGewinnt extends Spiel{
         if(!sp1_.getTurn_()){/*WallsOfText.playerRotation(sp1_.getName_());*/ spielZug(sp1_);}
         else if(!sp2_.getTurn_() && sp1_.getTurn_()){/*WallsOfText.playerRotation(sp2_.getName_());*/ spielZug(sp2_);}
         else if(sp1_.getTurn_() && sp2_.getTurn_()){/*WallsOfText.rotationEnd(); sp1_.setTurn_(false);*/ sp2_.setTurn_(false); durchGang();}
+    }
+    public void endGame(){
+        frame.close();
     }
 }
 

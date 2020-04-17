@@ -75,7 +75,8 @@ public class Client{
 
         switch (cmd.get(0)){
 
-            case("SERVER"):
+            case("STATUS"):
+                gui.setStatus(cmd.get(1));
                 break;
             case("LOGIN"):
                 id = cmd.get(1);
@@ -120,13 +121,32 @@ public class Client{
             case("CONNECT"):
                 if(cmd.get(1).equals("Viergewinnt")){
 
-                    System.out.println("I connected ...");
                     v = new VierGewinnt(cmd.get(2), id,  Integer.parseInt(cmd.get(3)),
                             Integer.parseInt(cmd.get(4)), this);
 
                 } else if (cmd.get(2).equals("Futtern")){
 
                 }
+                break;
+            case("DISPLAYMYTURN"):
+                //1 --> x
+                //2 --> y
+                gui.setStatus("waiting for enemys turn");
+                v.addClientVisual(Integer.parseInt(cmd.get(1)), Integer.parseInt(cmd.get(2)), "ME");
+                break;
+            case("DISPLAYENEMYTURN"):
+                //1 --> x
+                //2 --> y
+                gui.setStatus("your enemy has made a turn");
+                v.addClientVisual(Integer.parseInt(cmd.get(1)), Integer.parseInt(cmd.get(2)), "HIM");
+                break;
+            case("WIN"):
+                gui.setStatus("YOU WON!!!!!!!!!!");
+                v.endGame();
+                break;
+            case("LOOSE"):
+                gui.setStatus("YOU LOST :(");
+                v.endGame();
                 break;
             case("LOGOUT"):
                 break;

@@ -27,6 +27,7 @@ public class Command {
         }
     }
 
+    public int getLength(){ return length; }
     public String get(int i){
         return param.get(i);
     }
